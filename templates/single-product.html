@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>О продукте</title>
+</head>
+<body>
+<div style="text-align: center">
+    <p> {{ product.products_name }}</p>
+     <style>
+        p {
+        font-size: 20px;
+        }
+    </style>
+    <p>Колл-во: {{ product.count }}</p>
+    <img src="{{ product.image.url }}" width="400px" alt="">
+    <p>Цена: {{ product.price }}</p>
+    <p>Описание: {{ product.descriptions }}</p>
+    <p>Время создания: {{ product.created_at|date:"d M Y H:i:s" }}</p>
+</div>
+
+</body>
+</html>

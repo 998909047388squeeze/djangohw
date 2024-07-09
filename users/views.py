@@ -10,7 +10,7 @@ def register_view(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+            password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('login')
@@ -20,11 +20,11 @@ def register_view(request):
 
     else:
         form = UserRegistrationForm()
-        return render (request, 'signup.html', {'form': form})
+        return render(request, 'signup.html', {'form': form})
 
 def login_view(request):
     if request.method == 'POST':
-        form = UserRegistrationForm(request.POSt)
+        form = UserLoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
@@ -35,7 +35,7 @@ def login_view(request):
                 login(request, user)
                 return redirect('profile')
             else:
-                form = UserRegistrationForm()
+                form = UserLoginForm()
                 return render(request, 'login.html',{'form': form})
 
     else:
