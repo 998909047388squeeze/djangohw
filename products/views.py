@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 
 from products.models import ProductModel,CategoryModel, NewsModel, NewsCategoryModel,CartModel
 def home_page(request):
@@ -9,7 +9,11 @@ def home_page(request):
 
 
 def not_found_page(request):
-    return render(request,'notfound.html')
+    return render(request, 'notfound.html')
+def news_page(request):
+    news = NewsModel.objects.all()
+    context = {"news": news}
+    return render(request, "about.html", context=context)
 
 
 
