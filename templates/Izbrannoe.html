@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Izbrannoe</title>
+</head>
+<body>
+<h1>Избранный Товар:</h1>
+{% for k in products %}
+    <p>{{ k.products_name }}</p>
+<img src="{{ k.image.url }}" width="200px" class="card-img-top" alt="...">
+{% endfor %}
+
+</body>
+</html>

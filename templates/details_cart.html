@@ -1,0 +1,17 @@
+<!-- cart_detail.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart Detail</title>
+</head>
+<body>
+    <h1>Cart</h1>
+    <ul>
+        {% for item in cart_items %}
+        <li>{{ item.product.name }} ({{ item.quantity }}) - {{ item.product.price }} each</li>
+        {% endfor %}
+    </ul>
+    <h2>Total Price: {{ total_price }}</h2>
+</body>
+</html>

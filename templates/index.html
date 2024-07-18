@@ -12,6 +12,66 @@
 <body>
 <!-- partial:index.partial.html -->
 <title>in bl00m</title>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Tab Bar Menu</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+  <ul class="navigation">
+    <li>
+      <a href="#">
+        <span class="icon">
+          <i class="fa fa-house"></i>
+        </span>
+        <span class="text">Home</span>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <span class="icon">
+          <i class="fa fa-user"></i>
+        </span>
+        <span class="text">Profile</span>
+      </a>
+    </li>
+    <li class="active">
+      <a href="#">
+        <span class="icon">
+          <i class="fa fa-message"></i>
+        </span>
+        <span class="text">Messages</span>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <span class="icon">
+          <i class="fa fa-camera"></i>
+        </span>
+        <span class="text">Photos</span>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <span class="icon">
+          <i class="fa fa-gear"></i>
+        </span>
+        <span class="text">Settings</span>
+      </a>
+    </li>
+    <div class="indicator"></div>
+  </ul>
+
+  <script src="main.js"></script>
+</body>
+
+</html>
 
     <!--googlefont for Branding-->
     <link href='https://fonts.googleapis.com/css?family=Shadows+Into+Light' rel='stylesheet' type='text/css'>
@@ -56,7 +116,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="{% url 'login' %}"><i class="fa fa-heart-o"></i> </i>Login</a>
+                        <a href="{% url 'izbrannoe' %}"><i class="fa fa-heart-o"></i> </i>Izbrannoe</a>
                     </li>
                     <li>
                         {% if user.is_authenticated %}
@@ -65,7 +125,7 @@
                         <a href="{% url 'signup' %}"><i class="fa fa-heart-o"></i> </i>Signup</a>
                         {% endif %}
                     </li>
-                    <li id="cart" onclick="cartFunction()"><a href="#"><i class="fa fa-shopping-basket"></i>  Your Basket</a></li>
+                    <li ><a href="{% url 'user_cart' %}"><i class="fa fa-shopping-basket"></i>  Your Basket</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -141,6 +201,11 @@
                   {% csrf_token %}
                   <input type="number" min="1" value="1" name="pr_count">
                   <button class="btn btn-success" type="submit">Add to cart</button>
+                  <hr>
+                  <a href="{% url 'izbrannoe' %}" class="btn btn-primary">Добавить в избранное</a>
+                  <hr>
+
+
               </form>
           </div>
           </div>
@@ -167,7 +232,23 @@
 
     </div>
     <!-- /.container -->
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
 
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
     <div class="container">
 
         <hr>
@@ -191,4 +272,163 @@
     <script  src="{% static 'script.js' %}"></script>
 
 </body>
+<style>
+@import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #2f363e;
+}
+
+.navigation {
+  position: relative;
+  min-width: 540px;
+  min-height: 120px;
+  border-radius: 30px;
+  background: #2f363e;
+  box-shadow: 25px 25px 75px rgba(0, 0, 0, 0.25),
+    10px 10px 70px rgba(0, 0, 0, 0.25), inset 5px 5px 10px rgba(0, 0, 0, 0.5),
+    inset 5px 5px 20px rgba(255, 255, 255, 0.2),
+    inset -5px -5px 15px rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navigation li {
+  position: relative;
+  list-style: none;
+  width: 80px;
+  margin: 0 5px;
+}
+
+.navigation li::before {
+  content: "";
+  position: absolute;
+  top: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #222;
+  transition: 0.5s;
+}
+
+.navigation li.active::before {
+  background: #ff4463;
+  box-shadow: 0 0 5px #ff4463, 0 0 10px #ff4463, 0 0 20px #ff4463,
+    0 0 30px #ff4463, 0 0 40px #ff4463, 0 0 50px #ff4463;
+}
+
+.navigation li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-decoration: none;
+}
+
+.navigation li a .icon {
+  position: absolute;
+  font-size: 1.75em;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  color: #aaa;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+  transition-delay: 0.2s;
+}
+
+.navigation li.active a .icon {
+  transform: translateY(-55px);
+  background: #ff4463;
+  color: #c6c6c6;
+  box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.25),
+    inset 2px 2px 3px rgba(255, 255, 255, 0.25),
+    inset -3px -3px 5px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-delay: 0s;
+}
+
+.navigation li.active a .icon i {
+  z-index: 22;
+}
+
+.navigation li a .icon::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  background: #2f363e;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5),
+    inset 2px 2px 3px rgba(255, 255, 255, 0.25),
+    inset -3px -3px 5px rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 0.5s;
+}
+
+.navigation li.active a .icon::before {
+  transform: scale(1);
+}
+
+.navigation li a .text {
+  position: absolute;
+  font-size: 0.75em;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 0.5s;
+  padding: 2px 10px;
+  background: #fff;
+  border-radius: 15px;
+  color: #2f363e;
+  box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.25),
+    inset -3px -3px 5px rgba(0, 0, 0, 0.5);
+  transition-delay: 0s;
+}
+
+.navigation li.active a .text {
+  opacity: 1;
+  transform: translateY(10px);
+  transition-delay: 0.2s;
+}
+
+@media screen and (max-width: 668px) {
+  .navigation {
+    min-width: 100%;
+  }
+  .navigation li {
+    width: 70px;
+  }
+  .navigation li a .icon {
+    height: 60px;
+    width: 60px;
+    font-size: 19px;
+  }
+}
+</style>
+<script>
+    const list = document.querySelectorAll(".navigation li");
+function activelink() {
+  list.forEach((item) => item.classList.remove("active"));
+  this.classList.add("active");
+}
+list.forEach((item) => item.addEventListener("click", activelink));
+</script>
 </html>
+

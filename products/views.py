@@ -1,11 +1,32 @@
 from django.shortcuts import render, redirect
+from django.views.generic import ListView
+from products.handler import bot
 
 from products.models import ProductModel,CategoryModel, NewsModel, NewsCategoryModel,CartModel
-def home_page(request):
-    products = ProductModel.objects.all()
-    categories = CategoryModel.objects.all()
-    context = {'products': products,'categories': categories}
-    return render(request, 'index.html', context=context)
+
+# def home_page(request):
+#     products = ProductModel.objects.all()
+#     categories = CategoryModel.objects.all()
+#     context = {'products': products,'categories': categories}
+#     return render(request, 'index.html', context=context)
+
+class HomePage(ListView):
+    template_name = 'index.html'
+    model = ProductModel
+    context_object_name = 'products'
+    paginate_by = 1
+
+def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    context['categories'] = CategoryModel.objects.all()
+    return context
+
+def single_news(request, id):
+    news = NewsModel.objects.get(id=id)
+    context = {'news': news}
+    return render(request, 'single-news.html', context=context)
+
+
 
 
 def not_found_page(request):
@@ -40,6 +61,11 @@ def about_page(request): # ДОМАШКА
     context = {'news_title': news_title, 'news_categories': news_categories}
     return render(request, 'about.html', context=context)
 
+def izbrannoe(request):
+    products = ProductModel.objects.all()
+    categories = CategoryModel.objects.all()
+    context = {'products': products, 'categories': categories}
+    return render(request, 'izbrannoe.html', context=context)
 
 #Функция для добавления товара в корзину
 def add_product_to_cart(request,id):
@@ -64,8 +90,11 @@ def user_cart(request):
                          f'\n Кол-во: {i.user_product_quantity}\n' \
                          f'\n ID пользователя: {i.user_id}\n' \
                          f'\n Цена: {i.user_product.price}\n'
-            pass
+            bot.send_message(-1002173394684, main_text)
+            cart.delete()
+            return redirect('/')
     else:
         return render(request, 'cart.html', context={'cart': cart})
+
 
 

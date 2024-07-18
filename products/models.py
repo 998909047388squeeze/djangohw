@@ -71,3 +71,6 @@ class CartModel(models.Model):
     class Meta:
         verbose_name = "Cart"
         verbose_name_plural = "Carts"
+
+def sum(self):
+    return self.quantity * self.products_price

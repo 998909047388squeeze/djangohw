@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'about.css' %}">
+</head>
+<body>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" >{{ news.title_name }}</h5>
+                <p class="card-text">{{ news.title_text }}</p>
+                <p class="card-text">Категория: {{ news.category }}</p>
+            </div>
+        </div>
+</body>
+</html>
